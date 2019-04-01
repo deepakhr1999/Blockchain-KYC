@@ -29,4 +29,6 @@ elif [ $func = "query" ]; then
 	printf "${red}Private data:${close}\n"
 	peer chaincode query -C mychannel -n mycc -c '{"Args":["QueryPrivate","starboy"]}'
 	echo
+elif [ $func = "channel" ]; then
+	peer channel list
 fi

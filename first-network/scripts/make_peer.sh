@@ -31,17 +31,17 @@ if [ $func = "do" ]; then
 	./scripts/make_peer.sh make_channel
 	
 	for peer in 0 1; do
-		for org in 1 2; do
+		for org in 1 2 3; do
 			./scripts/make_peer.sh peer_join_channel $peer $org
 		done
 	done
 	
-	for org in 1 2; do
+	for org in 1 2 3; do
 		./scripts/make_peer.sh update_anchor_peer 0 $org
 	done
 
 	for peer in 0 1; do
-		for org in 1 2; do
+		for org in 1 2 3; do
 			./scripts/make_peer.sh cc_install $peer $org
 		done
 	done
@@ -79,7 +79,7 @@ elif [ $func = "cc_install" ]; then
 
 elif [ $func = "cc_init" ]; then
 	printf "${blue}Initializing ledger on orderer with ${colconpath} private collection${close}\n"
-	peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" --collections-config  $GOPATH/src/$colconpath		
+	peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer')" --collections-config  $GOPATH/src/$colconpath		
 
 else 
 	printf "${blue}Arg must be one of the following:${close}\n"

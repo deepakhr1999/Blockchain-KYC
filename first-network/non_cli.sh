@@ -44,6 +44,7 @@ printf "|                   Anchor Peer for each Org                   |\n"
 printf "+--------------------------------------------------------------+\n$(tput sgr0)${close}"
 ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
 ../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+../bin/configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org3MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org3MSP
 printf "${head}$(tput bold)----------------------------------------------------------------$(tput sgr0)${close}"
 echo
 
