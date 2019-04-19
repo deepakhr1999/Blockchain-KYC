@@ -1,0 +1,14 @@
+create table data.people (
+    Id int not null AUTO_INCREMENT,
+	Name varchar(255) not null,
+	Dob date not null,
+	Phone varchar(20) not null,
+	Aadhar varchar(20) not null,
+	Bank varchar(20) not null,
+	Filename varchar(255) not null,
+	Hash varchar(500) not null,
+	PRIMARY KEY (Id) );
+
+
+insert into data.people (Name, Dob, Phone, Aadhar, Bank, Filename, Hash) values ('Rebecca Wagner', '1989/07/18', '(872) 865 2129', '83052940203', 'Bank 1', 'rw_aadhar.png', 'hfih832nfopiahe8ihfhafoih');
+
