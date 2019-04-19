@@ -19,16 +19,11 @@ func=$1
 init $2 $3
 if [ $func = "invoke" ]; then
 	export PRIVATE=$(echo -n "{\"aadhar\":\"123456789\",\"hash\":\"donicbluefire\",\"phone\":\"9440987652\"}" | base64 | tr -d \\n)
-	peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses peer0.org2.example.com:7051 --tlsRootCertFiles $PEER0_ORG2_CA -c '{"Args":["Apply","starboy","Deepak H R","01-01-1800"]}'  --transient "{\"private\":\"$PRIVATE\"}"
+	# peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses peer0.org2.example.com:7051 --tlsRootCertFiles $PEER0_ORG2_CA -c '{"Args":["Apply","starboy","Deepak H R","01-01-1800"]}'  --transient "{\"private\":\"$PRIVATE\"}"
+	peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc --peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE -c '{"Args":["Apply","starboy","Deepak H R","01-01-1800"]}'  --transient "{\"private\":\"$PRIVATE\"}"
 elif [ $func = "query" ]; then
-	echo
-	printf "${blue}Querying as $CORE_PEER_ADDRESS\n"
-	printf "=======================================${close}\n"
-	printf "${green}Public data:${close}\n"
 	peer chaincode query -C mychannel -n mycc -c '{"Args":["Query","starboy"]}'
-	printf "${red}Private data:${close}\n"
 	peer chaincode query -C mychannel -n mycc -c '{"Args":["QueryPrivate","starboy"]}'
-	echo
 elif [ $func = "channel" ]; then
 	peer channel list
 fi

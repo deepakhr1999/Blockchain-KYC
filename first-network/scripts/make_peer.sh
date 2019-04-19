@@ -79,7 +79,7 @@ elif [ $func = "cc_install" ]; then
 
 elif [ $func = "cc_init" ]; then
 	printf "${blue}Initializing ledger on orderer with ${colconpath} private collection${close}\n"
-	peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer')" --collections-config  $GOPATH/src/$colconpath		
+	peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer', 'Org3MSP.peer')" --collections-config  $GOPATH/src/$colconpath		
 
 else 
 	printf "${blue}Arg must be one of the following:${close}\n"
