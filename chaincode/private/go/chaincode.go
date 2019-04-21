@@ -16,7 +16,8 @@ type SimpleChaincode struct {
 type Document struct{
 	Name   	string `json:"name"`
 	Dob 	string `json:"dob"`
-	Flag	string `json:"flag"`	
+	Flag	string `json:"flag"`
+	Bank	string `json:"bank"`	
 }
 
 type PrivData struct{
@@ -26,6 +27,13 @@ type PrivData struct{
 	Phone	string `json:"phone"`
 }
 
+type TransPriv struct{
+	Aadhar 	string `json:"aadhar"`
+	File 	string `json:"file"`
+	Hash 	string `json:"hash"`
+	Phone	string `json:"phone"`
+	Coll	string `json:"coll"`
+}
 
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response{
 	return shim.Success(nil)
@@ -68,8 +76,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, args []string)
 }
 
 func (t *SimpleChaincode) Apply(stub shim.ChaincodeStubInterface, args []string) pb.Response{
-	if len(args)!= 3{
-		return shim.Error("Incorrect arguments, expecting 3")
+	if len(args)!= 4{
+		return shim.Error("Incorrect arguments, expecting 4")
 	}
 
 	//assemble data
@@ -77,6 +85,7 @@ func (t *SimpleChaincode) Apply(stub shim.ChaincodeStubInterface, args []string)
 	var state = &Document{
 		Name: args[1],
 		Dob: args[2],
+		Bank: args[3],
 		Flag: "No",
 	}
 
@@ -98,9 +107,16 @@ func (t *SimpleChaincode) Apply(stub shim.ChaincodeStubInterface, args []string)
 		return shim.Error(err.Error())
 	}
 
-	var transient PrivData
+	var transient TransPriv
 	json.Unmarshal(transMap["private"], &transient)
-	private_b, err := json.Marshal(transient)
+	var priv = &PrivData{
+		Aadhar: transient.Aadhar,
+		File: transient.File,
+		Hash: transient.Hash,
+		Phone: transient.Phone,
+	}
+
+	private_b, err := json.Marshal(priv)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -110,7 +126,7 @@ func (t *SimpleChaincode) Apply(stub shim.ChaincodeStubInterface, args []string)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	err = stub.PutPrivateData("KYC_data", username, private_b)
+	err = stub.PutPrivateData(transient.Coll, username, private_b)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -150,19 +166,19 @@ func (t *SimpleChaincode) Validate(stub shim.ChaincodeStubInterface, args []stri
 
 // Gets data from private data collection
 func (t *SimpleChaincode) QueryPrivate(stub shim.ChaincodeStubInterface, args []string) pb.Response{
-	if len(args)!=1{
-		return shim.Error("Incorrect arguments, expecting 1")
+	if len(args)!=2{
+		return shim.Error("Incorrect arguments, expecting 2")
 	}
 
 	username := args[0]
-
+	coll := args[1]
 	//check if the state under username has been deleted
 	state_b, err := stub.GetState(username)
 	if state_b == nil {
 		return shim.Error("User does not exist")
 	}
 
-	private_b, err := stub.GetPrivateData("KYC_data", username) 
+	private_b, err := stub.GetPrivateData(coll, username) 
      if err != nil {
              return shim.Error("Failed to get private details for "+username)
      } else if private_b == nil {

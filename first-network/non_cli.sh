@@ -51,4 +51,4 @@ echo
 #enter into docker terminal
 docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH up -d
 docker exec cli scripts/make_peer.sh do
-docker exec -it cli bash
+# docker exec -it cli bash

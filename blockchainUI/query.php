@@ -14,8 +14,8 @@
       $peer = $_SESSION["peer"];
       $org = $_SESSION["org"];
       $name = geekify($_POST["name"]);
-      $result1 = shell_exec("docker exec cli scripts/query.sh public $peer $org ".$name);
-      $result2 = shell_exec("docker exec cli scripts/query.sh private $peer $org ".$name);
+      $bank = $_SESSION["bank"];
+      $result1 = shell_exec("docker exec cli scripts/query.sh public $peer $org $name $bank");
   }
  ?>
 <!doctype html>
@@ -107,6 +107,10 @@
                     echo "<tr><th>Name:</th><td>".ungeekify($result_public["name"])."</td></tr>";
                     echo "<tr><th>Date of birth:</th><td>".$result_public["dob"]."</td></tr>";
                     echo "<tr><th>Status:</th><td>".$result_public["flag"]."</td></tr>";
+                    echo "<tr><th>Status:</th><td>".$result_public["bank"]."</td></tr>";
+                    $bank = $result_public["bank"];
+                    $result2 =
+                    shell_exec("docker exec cli scripts/query.sh private $peer $org $name $bank");
                   }
                 }else{
                   echo "<tr><th>NULL</th><td>NULL</td></tr>";

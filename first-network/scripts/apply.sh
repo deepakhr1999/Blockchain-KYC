@@ -14,11 +14,13 @@ org=$2
 Id=$3
 name=$4
 dob=$5
-phone=$6
-aadhar=$7
-file=$8
-hash=$9
+bank=$6
+phone=$7
+aadhar=$8
+file=$9
+hash=${10}
+coll=${11}
 init $peer $org
 
-export PRIVATE=$(echo -n "{\"aadhar\":\"${aadhar}\",\"hash\":\"${hash}\",\"phone\":\"${phone}\",\"file\":\"${file}\"}" | base64 | tr -d \\n)
-peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc --peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE  -c '{"Args":["Apply","'$Id'","'$name'","'$dob'"]}'  --transient "{\"private\":\"$PRIVATE\"}"
+export PRIVATE=$(echo -n "{\"aadhar\":\"${aadhar}\",\"hash\":\"${hash}\",\"phone\":\"${phone}\",\"file\":\"${file}\",\"coll\":\"${coll}\"}" | base64 | tr -d \\n)
+peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc --peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE  -c '{"Args":["Apply","'$Id'","'$name'","'$dob'","'$bank'"]}'  --transient "{\"private\":\"$PRIVATE\"}"

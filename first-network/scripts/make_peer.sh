@@ -55,9 +55,9 @@ elif [ $func = "make_channel" ]; then
 	res=$?
 
 elif [ $func = "peer_join_channel" ]; then
-	printf "${blue}Join peer to the channel${close}\n"
 	PEER=$2
 	ORG=$3
+	printf "${blue}Join peer to the channel: Peer: ${PEER}, Org: ${ORG}${close}\n"
 	init $PEER $ORG
 	peer channel join -b mychannel.block
 	res=$?
@@ -76,11 +76,12 @@ elif [ $func = "cc_install" ]; then
 	init $PEER $ORG
 	printf "${blue}Installing chaincode on peer${PEER} on org${ORG} ${close}\n"
 	peer chaincode install -n mycc -v 1.0 -p $ccpath
+	res=$?
 
 elif [ $func = "cc_init" ]; then
 	printf "${blue}Initializing ledger on orderer with ${colconpath} private collection${close}\n"
 	peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer', 'Org3MSP.peer')" --collections-config  $GOPATH/src/$colconpath		
-
+	res=$?
 else 
 	printf "${blue}Arg must be one of the following:${close}\n"
 	printf "${blue}Help:		${close}\n"

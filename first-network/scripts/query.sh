@@ -11,11 +11,17 @@ func=$1
 peer=$2
 org=$3
 username=$4
+bank=$5
 init $peer $org
+if [ $bank = "BankOne" ]; then
+	coll="KYCDataOne"
+else
+	coll="KYCDataTwo"
+fi
 if [ $func = "public" ]; then
 	peer chaincode query -C mychannel -n mycc -c '{"Args":["Query","'$username'"]}'
 elif [ $func = "private" ]; then
-	peer chaincode query -C mychannel -n mycc -c '{"Args":["QueryPrivate","'$username'"]}'
+	peer chaincode query -C mychannel -n mycc -c '{"Args":["QueryPrivate","'$username'","'$coll'"]}'
 else
 	echo Invalid;
 fi

@@ -23,15 +23,20 @@
         $Aadhar = $row["Aadhar"];     $Bank = geekify($row["Bank"]);
         $File = $row["Filename"];     $Hash = $row["Hash"];   
         $peer = $_SESSION["peer"];    $org = $_SESSION["org"];
-        if($_SESSION["bank"] == "Bank_admin"){
+        $Bank = $_SESSION["bank"];    $Coll = "KYCDataOne";
+        if($Bank == "Bank_admin"){
           //only endorse this record
           shell_exec("docker exec cli scripts/endorse.sh $peer $org $Id"); 
           $_SESSION["message"] = "Endorsed KYC!";
           $sql = "delete from data.people where Id = ".$_POST["Id"];
           $out = call($sql);
+        }else{
+          if($bank == "BankTwo"){
+            $Coll = "KYCDataTwo";
+          }
+          $out =
+            shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Bank $Phone $Aadhar $File $Hash $Coll");
         }
-        $out =
-            shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Phone $Aadhar $File $Hash");
     }
     else{
         $_SESSION["message"] = "Rejected KYC!";
