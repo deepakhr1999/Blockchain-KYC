@@ -21,6 +21,7 @@ type Document struct{
 
 type PrivData struct{
 	Aadhar 	string `json:"aadhar"`
+	File 	string `json:"file"`
 	Hash 	string `json:"hash"`
 	Phone	string `json:"phone"`
 }

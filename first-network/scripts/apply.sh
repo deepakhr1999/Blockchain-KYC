@@ -16,8 +16,9 @@ name=$4
 dob=$5
 phone=$6
 aadhar=$7
-hash=$8
+file=$8
+hash=$9
 init $peer $org
 
-export PRIVATE=$(echo -n "{\"aadhar\":\"${aadhar}\",\"hash\":\"${hash}\",\"phone\":\"${phone}\"}" | base64 | tr -d \\n)
+export PRIVATE=$(echo -n "{\"aadhar\":\"${aadhar}\",\"hash\":\"${hash}\",\"phone\":\"${phone}\",\"file\":\"${file}\"}" | base64 | tr -d \\n)
 peer chaincode invoke -o orderer.example.com:7050 --tls true --cafile $ORDERER_CA -C mychannel -n mycc --peerAddresses $CORE_PEER_ADDRESS --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE  -c '{"Args":["Apply","'$Id'","'$name'","'$dob'"]}'  --transient "{\"private\":\"$PRIVATE\"}"

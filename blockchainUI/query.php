@@ -131,17 +131,17 @@
                   echo "<tr><th>Error:</th><td>Could not get private details</td></tr>";
                 }else{
                   $result_private = json_decode($result2, true);
-                  $sql =
-                    "select Filename from data.people where Hash='".$result_private["hash"]."'";
-
-                  $l = call($sql);
-                  if($row = $l->fetch_assoc()){
-                    $image = $row["Filename"];
+                  $rimg = $result_private["file"];
+                  if(file_exists($rimg)){
+                    if(md5_file($rimg) == $result_private["hash"]){
+                        $image = $rimg;
+                    }
                   }else{
                     $image = "images/data_breach.jpg";
                   }
                   echo "<tr><th>Aadhar:</th><td>".$result_private["aadhar"]."</td></tr>";
                   echo "<tr><th>Phone:</th><td>".$result_private["phone"]."</td></tr>";
+                  echo "<tr><th>Phone:</th><td>".$result_private["file"]."</td></tr>";
                   echo "<tr><th>Hash:</th><td>".$result_private["hash"]."</td></tr>";
                 }
              ?>
@@ -150,11 +150,8 @@
     </div>
     <hr>
     <div class="m-5 text-center">
-      <img id="img" src="images/default.png">
+      <img id="img" src="<?php echo $image ?>">
     </div>
-     <script type="text/javascript">
-        document.getElementById("img").src="<?php echo $image ?>";
-     </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

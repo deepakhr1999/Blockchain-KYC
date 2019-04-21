@@ -19,20 +19,19 @@
         $row = $result->fetch_assoc();
         $Name = geekify($row["Name"]);
         $Id = $Name;
-        $Dob = $row["Dob"];
-        $Phone = $row["Phone"];
-        $Aadhar = $row["Aadhar"];
-        $Bank = geekify($row["Bank"]);
-        $Hash = $row["Hash"];   $peer = $_SESSION["peer"];    $org = $_SESSION["org"];
+        $Dob = $row["Dob"];           $Phone = $row["Phone"];
+        $Aadhar = $row["Aadhar"];     $Bank = geekify($row["Bank"]);
+        $File = $row["Filename"];     $Hash = $row["Hash"];   
+        $peer = $_SESSION["peer"];    $org = $_SESSION["org"];
         if($_SESSION["bank"] == "Bank_admin"){
           //only endorse this record
           shell_exec("docker exec cli scripts/endorse.sh $peer $org $Id"); 
           $_SESSION["message"] = "Endorsed KYC!";
-          $sql = "update data.people set is_pending=1 where Id=".$_POST["Id"];
+          $sql = "delete from data.people where Id = ".$_POST["Id"];
           $out = call($sql);
         }
         $out =
-            shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Phone $Aadhar $Hash");
+            shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Phone $Aadhar $File $Hash");
     }
     else{
         $_SESSION["message"] = "Rejected KYC!";
