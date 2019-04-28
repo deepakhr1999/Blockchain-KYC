@@ -62,7 +62,8 @@
     }
 
     if (! isset($_SESSION["person"])){
-        header("Location: ".$home);
+        // header("Location: ".$home);
+        die("error");
     }
  ?>
  <!doctype html>

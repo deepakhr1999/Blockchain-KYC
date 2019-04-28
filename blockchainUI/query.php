@@ -107,7 +107,7 @@
                     echo "<tr><th>Name:</th><td>".ungeekify($result_public["name"])."</td></tr>";
                     echo "<tr><th>Date of birth:</th><td>".$result_public["dob"]."</td></tr>";
                     echo "<tr><th>Status:</th><td>".$result_public["flag"]."</td></tr>";
-                    echo "<tr><th>Status:</th><td>".$result_public["bank"]."</td></tr>";
+                    echo "<tr><th>Bank:</th><td>".$result_public["bank"]."</td></tr>";
                     $bank = $result_public["bank"];
                     $result2 =
                     shell_exec("docker exec cli scripts/query.sh private $peer $org $name $bank");

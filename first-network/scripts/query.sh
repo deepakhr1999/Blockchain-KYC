@@ -11,7 +11,11 @@ func=$1
 peer=$2
 org=$3
 username=$4
-bank=$5
+if [[ -z $5 ]]; then
+	bank="hello"
+else
+	bank=$5
+fi
 init $peer $org
 if [ $bank = "BankOne" ]; then
 	coll="KYCDataOne"

@@ -11,7 +11,6 @@
 
   if ($_SERVER['REQUEST_METHOD']=="POST") {
     if ($_POST["decision"]=="accept") {
-        $_SESSION["message"] = "Accepted KYC!";
         $_SESSION["message_tag"]  = "alert-success";
         $sql = "update data.people set Bank='Bank_admin', is_pending=0 where Id = ".$_POST["Id"];
         $out = call($sql);
@@ -31,9 +30,11 @@
           $sql = "delete from data.people where Id = ".$_POST["Id"];
           $out = call($sql);
         }else{
-          if($bank == "BankTwo"){
+          if($Bank == "BankTwo"){
             $Coll = "KYCDataTwo";
           }
+
+        $_SESSION["message"] = "Accepted KYC! with $Coll";
           $out =
             shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Bank $Phone $Aadhar $File $Hash $Coll");
         }
