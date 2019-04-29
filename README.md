@@ -59,7 +59,6 @@ $ sudo systemctl restart apache2
 ```
 $ cd /var/www/html
 $ git clone https://github.com/deepakhr1999/Blockchain-KYC
-$ sudo chown -R $USER Blockchain-KYC
-$ sudo chown -R www-data Blockchain-KYC
+$ sudo chown -R $USER:www-data Blockchain-KYC
 ```
 *** We need to update this with more instructions **
