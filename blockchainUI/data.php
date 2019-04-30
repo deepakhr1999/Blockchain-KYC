@@ -10,19 +10,20 @@
   }
 
   if ($_SERVER['REQUEST_METHOD']=="POST") {
-    if ($_POST["decision"]=="accept") {
-        $_SESSION["message_tag"]  = "alert-success";
-        $sql = "update data.people set Bank='Bank_admin', is_pending=0 where Id = ".$_POST["Id"];
-        $out = call($sql);
         $result = call("select * from data.people where Id = ".$_POST["Id"]);
         $row = $result->fetch_assoc();
         $Name = geekify($row["Name"]);
         $Id = $Name;
         $Dob = $row["Dob"];           $Phone = $row["Phone"];
         $Aadhar = $row["Aadhar"];     $Bank = geekify($row["Bank"]);
-        $File = $row["Filename"];     $Hash = $row["Hash"];   
+        $File = $row["Filename"];     $Hash = $row["Hash"];
         $peer = $_SESSION["peer"];    $org = $_SESSION["org"];
         $Bank = $_SESSION["bank"];    $Coll = "KYCDataOne";
+    if ($_POST["decision"]=="accept") {
+        $_SESSION["message_tag"]  = "alert-success";
+        $sql = "update data.people set Bank='Bank_admin', is_pending=0 where Id = ".$_POST["Id"];
+        $out = call($sql);
+           
         if($Bank == "Bank_admin"){
           //only endorse this record
           shell_exec("docker exec cli scripts/endorse.sh $peer $org $Id"); 
@@ -34,7 +35,7 @@
             $Coll = "KYCDataTwo";
           }
 
-        $_SESSION["message"] = "Accepted KYC! with $Coll";
+          $_SESSION["message"] = "Accepted KYC! with $Coll";
           $out =
             shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Bank $Phone $Aadhar $File $Hash $Coll");
         }
@@ -43,6 +44,9 @@
         $_SESSION["message"] = "Rejected KYC!";
         $_SESSION["message_tag"]  = "alert-danger";
         $sql = "delete from data.people where Id = ".$_POST["Id"];
+        if ($Bank == "Bank_admin") {
+          shell_exec("docker exec cli scripts/delete.sh $peer $org $Id");
+        }
     }
     $result = call($sql);
   }
