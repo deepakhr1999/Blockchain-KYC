@@ -38,6 +38,7 @@
           $_SESSION["message"] = "Accepted KYC! with $Coll";
           $out =
             shell_exec("docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Bank $Phone $Aadhar $File $Hash $Coll");
+          // echo "docker exec cli scripts/apply.sh $peer $org $Id $Name $Dob $Bank $Phone $Aadhar $File $Hash $Coll";
         }
     }
     else{
@@ -139,8 +140,7 @@
           </tr>
         </thead>
         <?php 
-          $sql =
-          "select * from data.people where Bank='".$_SESSION["bank"]."' and is_pending = 1 limit 1";
+          $sql = "select * from data.people where Bank='".$_SESSION["bank"]."' and is_pending = 1 limit 1";
           if($_SESSION["bank"] == "Bank_admin"){
             $sql = "select * from data.people where Bank='Bank_admin' and is_pending = 0 limit 1";
           }

@@ -8,16 +8,24 @@
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if($_POST["form"]=="login"){
         //then this an attempt to login
-        $sql = "select * from data.peers where Username='%s' and password='%s'";
-        $sql = sprintf($sql, $_POST["username"], md5($_POST["password"]));
-        $result = call($sql);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $_SESSION["username"] = $row["Username"];
-            $_SESSION["bank"] = $row["Bank"];
-            $_SESSION["peer"] = $row["Peer"];
-            $_SESSION["org"] = $row["Org"];
-            $_SESSION["is_staff"] = $row["is_staff"];
+        // $sql = "select * from data.peers where Username='%s' and password='%s'";
+        // $sql = sprintf($sql, $_POST["username"], md5($_POST["password"]));
+        // $result = call($sql);
+        $user = $_POST["username"];
+        $pass = $_POST["password"];
+        if ($user=="Bank1" || $user=="Bank2" || $user=="Bank_admin") {
+            
+            $_SESSION["username"] = $user;
+            $_SESSION["bank"] = $user;
+            $_SESSION["peer"] = 0;
+
+            if($user=="Bank1"){
+              $_SESSION["org"] = 1;
+            }elseif ($user == "Bank1") {
+              $_SESSION["org"] = 2;
+            }else{
+              $_SESSION["org"] = 3;
+            }
             header("Location: data.php");
         }
         //failed attempt
@@ -139,20 +147,27 @@
 
 
 			<?php 
-			    $sql = "select distinct Bank from data.peers";
-			    $result = call($sql);
-			    if($result->num_rows>0){
-			      echo '<div class="form-group">';
-			      echo '<label>Bank:</label>';
-			      echo '<select name="bank" class="custom-select" placeholder="Choose your bank">';
-			      while($row = $result->fetch_assoc()){
-			        if($row["Bank"] != "Bank_admin"){
-			          echo '<option value="'.$row["Bank"].'">'.$row["Bank"].'</option>';
-			        }
-			      }
-			      echo '</select></div>';
-			    }
+			    // $sql = "select distinct Bank from data.peers";
+			    // $result = call($sql);
+			    // if($result->num_rows>0){
+			    //   echo '<div class="form-group">';
+			    //   echo '<label>Bank:</label>';
+			    //   echo '<select name="bank" class="custom-select" placeholder="Choose your bank">';
+			    //   while($row = $result->fetch_assoc()){
+			    //     if($row["Bank"] != "Bank_admin"){
+			    //       echo '<option value="'.$row["Bank"].'">'.$row["Bank"].'</option>';
+			    //     }
+			    //   }
+			    //   echo '</select></div>';
+			    // }
 			 ?>
+       <div class="form-group">
+        <label>Bank:</label>
+        <select name="bank" class="custom-select" placeholder="Choose your bank">
+          <option value="Bank1">Bank1</option>
+          <option value="Bank2">Bank2</option>
+        </select>
+      </div>
 			<button class="btn btn-block btn-primary" name="form" value="kyc">Submit</button>
 		</form>
     </section>
