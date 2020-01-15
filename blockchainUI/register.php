@@ -27,7 +27,7 @@
     
     <div class="m-3 p-3">
       <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-        <?php echo (md5("blockchain")); ?>
+        <?php echo (md5("password")); ?>
         <legend>Register</legend><hr>
         
         <div class="form-group">
