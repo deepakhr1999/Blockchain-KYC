@@ -3,7 +3,7 @@ function init(){
 	PEER=$1
 	ORG=$2
 	CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org${ORG}.example.com/users/Admin@org${ORG}.example.com/msp
-	CORE_PEER_ADDRESS=peer${PEER}.org${ORG}.example.com:7051
+	CORE_PEER_ADDRESS=peer${PEER}.org${ORG}.example.com:$((2*$ORG+$PEER+5))051
 	CORE_PEER_LOCALMSPID="Org${ORG}MSP"
 	CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org${ORG}.example.com/peers/peer${PEER}.org${ORG}.example.com/tls/ca.crt
 }
